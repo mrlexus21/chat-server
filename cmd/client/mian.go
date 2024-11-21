@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"flag"
 	"github.com/fatih/color"
+	"github.com/mrlexus21/chat-server/internal/config"
 	chat_v1 "github.com/mrlexus21/chat-server/pkg/chat/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -10,13 +12,26 @@ import (
 	"time"
 )
 
-const (
-	address = "localhost:50052"
-	userID  = 1
-)
+var configPath string
+
+func init() {
+	flag.StringVar(&configPath, "config-path", ".env", "path to config file")
+}
 
 func main() {
-	conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	flag.Parse()
+
+	// Считываем переменные окружения
+	if err := config.Load(configPath); err != nil {
+		log.Fatalf("failed to load config: %v", err)
+	}
+
+	grpcConfig, err := config.NewGRPCConfig()
+	if err != nil {
+		log.Fatalf("failed to get grpc config: %v", err)
+	}
+
+	conn, err := grpc.NewClient(grpcConfig.Address(), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to connect to server: %v", err)
 	}
@@ -27,7 +42,7 @@ func main() {
 		}
 	}(conn)
 
-	c := chat_v1.NewUserV1Client(conn)
+	c := chat_v1.NewChatV1Client(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -36,8 +51,8 @@ func main() {
 		Usernames: []string{"Alex", "Tom"},
 	})
 	if err != nil {
-		log.Fatalf("Failed create chat: %v", err)
+		log.Fatalf("Failed to create chat: %v", err)
 	}
 
-	log.Printf(color.RedString("Create chat info:\n"), color.GreenString("%+v", r.String()))
+	log.Printf("Create chat info:\n%s", color.GreenString("%+v", r.String()))
 }
