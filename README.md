@@ -1,5 +1,3 @@
-# microservices_course_boilerplate
+### Chat Service
 
-Данный репозиторий содержит boilerplate для выполнения домашних заданий по курсу ["Микросервисы как в BigTech-компаниях"](https://olezhek28.courses/).
-
-Автор курса: [Олег Козырев](https://www.linkedin.com/in/olezhek28/)
+Данный проект представляет собой **микросервис отправки сообщений в чат**.
