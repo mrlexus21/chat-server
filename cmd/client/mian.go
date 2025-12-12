@@ -1,15 +1,17 @@
+// Package main предоставляет клиентскую часть приложения для работы с чат-сервером.
 package main
 
 import (
 	"context"
 	"flag"
+	"log"
+	"time"
+
 	"github.com/fatih/color"
 	"github.com/mrlexus21/chat-server/internal/config"
 	chat_v1 "github.com/mrlexus21/chat-server/pkg/chat/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"log"
-	"time"
 )
 
 var configPath string

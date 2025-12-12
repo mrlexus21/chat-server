@@ -1,9 +1,14 @@
+// Package main реализует gRPC-сервер для управления чатами, включая создание, удаление и отправку сообщений.
 package main
 
 import (
 	"context"
 	"flag"
 	"fmt"
+	"log"
+	"net"
+	"time"
+
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/mrlexus21/chat-server/internal/config"
@@ -11,9 +16,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"log"
-	"net"
-	"time"
 )
 
 var configPath string
