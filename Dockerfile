@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS builder
+FROM golang:1.25.5-alpine AS builder
 
 COPY . /github.com/mrlexus21/chat-server/source/
 WORKDIR /github.com/mrlexus21/chat-server/source/
