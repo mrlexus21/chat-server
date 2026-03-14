@@ -4,8 +4,6 @@ package chat_v1;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/wrappers.proto";
-
 
 option go_package = "github.com/mrlexus21/chat-server/pkg/chat_v1;chat_v1";
 
@@ -15,8 +13,12 @@ service ChatV1 {
   rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
 }
 
+message UserNames {
+  repeated string names = 1;
+}
+
 message CreateRequest {
-   repeated string usernames = 1;
+  UserNames user_names = 1;
 }
 
 message CreateResponse {
@@ -27,9 +29,13 @@ message DeleteRequest {
   int64 id = 1;
 }
 
-message SendMessageRequest {
+message Message {
   string from = 1;
   string text = 2;
   google.protobuf.Timestamp timestamp = 3;
+}
+
+message SendMessageRequest {
+  Message message = 1;
 }
 
